@@ -36,4 +36,9 @@ class Permintaan extends Model
     {
         return $this->morphOne(Persetujuan::class, 'persetujuanable');
     }
+    public function pengeluaran()
+{
+    return $this->hasMany(Pengeluaran::class, 'permintaan_id');
+}
+
 }

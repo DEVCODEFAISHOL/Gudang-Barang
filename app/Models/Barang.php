@@ -15,10 +15,16 @@ class Barang extends Model
     protected $table = 'barangs'; // Sesuai ERD
 
     protected $fillable = [
-        'kategori_id',
+      'kategori_id',
         'kode_barang',
         'nama_barang',
         'satuan',
+        'deskripsi',
+        'harga_beli',
+        'harga_jual',
+        'status',
+        'spesifikasi',
+        'merk',
     ];
 
     public function kategori(): BelongsTo
@@ -46,4 +52,7 @@ class Barang extends Model
     {
         return $this->hasMany(InventarisDetail::class, 'barang_id');
     }
+
+
+    
 }

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Frontend\ContactController;
+use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\KatalogController;
 use App\Http\Controllers\manager\LaporanController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminInventarisController;
@@ -24,9 +27,14 @@ use App\Http\Controllers\AdminStokController;
 use App\Http\Controllers\Manager;
 
 // Halaman utama
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog.index');
+Route::get('/katalog/{barang:slug}', [KatalogController::class, 'show'])->name('katalog.show');
+Route::get('/kontak', [ContactController::class, 'index'])->name('contact'); // Ubah dari contact.index ke contact
+Route::post('/kontak', [ContactController::class, 'store'])->name('contact.store');
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
 
 // Dashboard umum (fallback)
 Route::get('/dashboard', function () {
@@ -55,7 +63,27 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('stok', StokController::class)->only(['index', 'edit', 'update']); // Stok biasanya tidak dibuat/dihapus manual
     Route::resource('permintaan', PermintaanController::class)->only(['index', 'create', 'store', 'show']);
     Route::resource('pengeluaran', PengeluaranController::class)->only(['index', 'create', 'store', 'show']);
-    Route::resource('inventaris', InventarisController::class)->only(['index', 'create', 'store', 'show']);
+     // =================== INVENTARIS (STOK OPNAME) ROUTES ===================
+    Route::prefix('inventaris')->name('inventaris.')->group(function () {
+        Route::get('/', [InventarisController::class, 'index'])->name('index');
+        Route::get('/create', [InventarisController::class, 'create'])->name('create');
+        Route::post('/', [InventarisController::class, 'store'])->name('store');
+        Route::get('/{inventaris}', [InventarisController::class, 'show'])->name('show');
+        Route::get('/{inventaris}/edit', [InventarisController::class, 'edit'])->name('edit');
+        Route::put('/{inventaris}', [InventarisController::class, 'update'])->name('update');
+        Route::delete('/{inventaris}', [InventarisController::class, 'destroy'])->name('destroy');
+
+        // Additional actions
+        Route::patch('/{inventaris}/approve', [InventarisController::class, 'approve'])->name('approve');
+        Route::patch('/{inventaris}/cancel', [InventarisController::class, 'cancel'])->name('cancel');
+        Route::get('/{inventaris}/report', [InventarisController::class, 'generateReport'])->name('report');
+        Route::get('/barang/{barang}/stok-sistem', [InventarisController::class, 'getStokSistem'])->name('stok-sistem');
+        Route::get('/export', [InventarisController::class, 'export'])->name('export');
+
+        // Bulk opname routes
+        Route::get('/bulk/create', [InventarisController::class, 'bulkOpname'])->name('bulk.create');
+        Route::post('/bulk', [InventarisController::class, 'storeBulkOpname'])->name('bulk.store');
+    });
 });
 
 // ---- RUTE UNTUK MANAGER ----

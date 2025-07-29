@@ -15,7 +15,7 @@ class Pengeluaran extends Model
 
     protected $fillable = [
         'user_id',
-        'permintaan_id', // Bisa null
+        'permintaan_id',
         'kode_pengeluaran',
         'tanggal_pengeluaran',
         'penerima',

@@ -10,12 +10,13 @@ class PengeluaranDetail extends Model
 {
     use HasFactory;
 
-    protected $table = 'pengeluaran_details'; // Sesuai ERD
+    protected $table = 'pengeluaran_details';
 
     protected $fillable = [
         'pengeluaran_id',
         'barang_id',
-        'jumlah_dikeluarkan',
+        'jumlah_dikeluarkan',    // Disesuaikan dengan controller
+        'keterangan_detail',  // Disesuaikan dengan controller
     ];
 
     public function pengeluaran(): BelongsTo
@@ -26,5 +27,11 @@ class PengeluaranDetail extends Model
     public function barang(): BelongsTo
     {
         return $this->belongsTo(Barang::class, 'barang_id');
+    }
+
+    // Tambahkan relasi ke Stok jika diperlukan
+    public function stok()
+    {
+        return $this->belongsTo(Stok::class, 'barang_id');
     }
 }

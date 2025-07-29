@@ -1,0 +1,67 @@
+@media print {
+    /* Sembunyikan semua elemen yang memiliki class 'no-print' */
+    .no-print {
+        display: none !important;
+    }
+
+    /* Tampilkan elemen yang hanya untuk print */
+    .print-only {
+        display: block !important;
+    }
+
+    /* Override gaya default agar area cetak mengisi seluruh halaman */
+    body.font-sans {
+        background-color: white !important; /* Hapus background gelap */
+    }
+
+    .printable-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    /* Reset margin dan padding untuk area cetak */
+    .printable-area .py-12 {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .printable-area .max-w-7xl {
+        max-width: none !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Hapus shadow dan atur warna teks untuk cetak */
+    .printable-area .shadow-lg,
+    .printable-area .shadow-xl {
+        box-shadow: none !important;
+    }
+
+    .printable-area .bg-white {
+        background-color: transparent !important;
+    }
+
+    .printable-area h1,
+    .printable-area h2,
+    .printable-area h3,
+    .printable-area h4,
+    .printable-area p,
+    .printable-area td,
+    .printable-area th,
+    .printable-area div {
+        color: black !important; /* Pastikan semua teks hitam */
+    }
+
+    /* Pastikan tabel memiliki border yang jelas saat dicetak */
+    .printable-area table,
+    .printable-area th,
+    .printable-area td {
+        border: 1px solid black !important;
+    }
+
+    .printable-area thead {
+        background-color: #e5e7eb !important; /* Warna abu-abu terang untuk header tabel */
+    }
+}

@@ -13,12 +13,23 @@ return new class extends Migration
     {
         Schema::create('barangs', function (Blueprint $table) {
             $table->id();
-        // Relasi ke tabel kategoris, yang SEKARANG PASTI SUDAH ADA
-        $table->foreignId('kategori_id')->constrained('kategoris')->onUpdate('cascade')->onDelete('restrict');
-        $table->string('kode_barang')->unique();
-        $table->string('nama_barang');
-        $table->string('satuan');
-        $table->timestamps();
+            $table->foreignId('kategori_id')->constrained('kategoris')->onDelete('cascade');
+            $table->string('kode_barang', 50)->unique();
+            $table->string('nama_barang', 255);
+            $table->enum('satuan', ['pcs', 'kg', 'liter', 'meter', 'unit', 'set', 'box', 'pack', 'gram', 'ton', 'ml']);
+            $table->text('deskripsi')->nullable();
+            $table->decimal('harga_beli', 12, 2)->nullable();
+            $table->decimal('harga_jual', 12, 2)->nullable();
+            $table->enum('status', ['aktif', 'tidak_aktif'])->default('aktif');
+            $table->text('spesifikasi')->nullable();
+            $table->string('merk', 100)->nullable();
+            $table->timestamps();
+
+            // Indexes for better performance
+            $table->index(['kategori_id', 'status']);
+            $table->index(['kode_barang']);
+            $table->index(['nama_barang']);
+            $table->index(['status']);
         });
     }
 

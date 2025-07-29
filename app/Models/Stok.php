@@ -11,10 +11,16 @@ class Stok extends Model
 
     protected $table = 'stoks';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'barang_id',
         'jumlah_stok',
         'stok_aman',
+        'lokasi_penyimpanan', // <-- TAMBAHKAN INI
     ];
 
     /**
@@ -24,6 +30,10 @@ class Stok extends Model
     {
         return $this->belongsTo(Barang::class);
     }
-
+    // App\Models\Stok.php
+public function pergerakan()
+{
+    return $this->hasMany(PergerakanStok::class, 'stok_id');
+}
 
 }
